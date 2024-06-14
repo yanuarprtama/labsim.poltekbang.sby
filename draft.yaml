@@ -1,0 +1,73 @@
+models:
+  Prodi :
+    p_nama : string
+    p_kode : string
+    status : enum:aktif,non_aktif
+    relationships :
+      hasMany : Laboratorium
+  
+  # Lab
+
+  Laboratorium :
+    l_nama : string
+    l_jenis : enum:laboratorium,simulator
+    l_status : enum:aktif,non_aktif
+    prodi_id : id foreign:prodis
+    relationships :
+      hasMany : Inventaris,PeminjamanLaboratorium
+      belongsTo : Prodi
+
+  Inventaris :
+    a_nama : string
+    a_kode : string
+    a_stok : int
+    a_status : enum:tersedia,tidak terpakai
+    laboratorium_id : id foreign:laboratoriums
+    relationships:
+      belongsTo : Laboratorium
+      belongsToMany : PeminjamanInventaris
+  
+  PeminjamanLaboratorium :
+    pl_nomor_peminjaman : string
+    pl_mata_kuliah : text
+    pl_jenis_kegiatan : enum:penelitian,praktikum
+    pl_jam_mulai : time
+    pl_jam_akhir : time
+    pl_dosen_pengajar : texts
+    pl_status : enum:DITERIMA,KADALUARSA,DITOLAK,DIBATALKAN,DIKEMBALIKAN
+    laboratorium_id : id foreign:laboratoriums
+    user_id : id foreign:users
+    relationships :
+      hasOne : KritikSaranLaboratorium
+  
+  KritikSaranLaboratorium :
+    peminjaman_laboratorium_id : id foreign:peminjaman_laboratoriums
+    ks_kritik : text
+    ks_saran : text
+    relationships :
+      belongsTo : PeminjamanLaboratorium
+  
+  PeminjamanInventaris :
+    pi_nomor_peminjaman : string
+    pi_jam_mulai : time
+    pi_jam_akhir : time
+    pi_status : enum:DITERIMA,KADALUARSA,DITOLAK,DIBATALKAN,DIKEMBALIKAN
+    user_id : id foreign:users
+    relationships :
+      belongsToMany : Inventaris
+      hasOne : DetailPeminjamanInventaris
+
+  DetailPeminjamanInventaris :
+    peminjaman_inventaris_id : id foreign:peminjaman_inventaris
+    inventaris_id : id foreign:inventaris
+    dpi_qty : int
+    relationships:
+      belongsTo : Inventaris,PeminjamanInventaris
+
+  KritikSaranInventaris :
+    peminjaman_inventaris_id : id foreign:peminjaman_inventaris
+    ks_kritik : text
+    ks_saran : text
+    relationships :
+      belongsTo : PeminjamanInventaris
+      
