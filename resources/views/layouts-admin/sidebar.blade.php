@@ -27,8 +27,10 @@
                 data-accordion="false">
 
                 {{-- Transaksi Start --}}
-                <li class="nav-item {{ $title == 'Data Pokok' ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ $title == 'Data Pokok' ? 'active' : '' }}">
+                <li
+                    class="nav-item {{ ($title == 'Prodi' or $title == 'Laboratorium' or $title == 'Inventaris') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ ($title == 'Prodi' or $title == 'Laboratorium' or $title == 'Inventaris') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             Instansi
@@ -37,24 +39,24 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ asset('transaksi') }}"
-                                class="nav-link {{ $action == 'lihat_transaksi' ? 'active' : '' }}">
+                            <a href="{{ route('prodi.index') }}"
+                                class="nav-link {{ $action == 'Prodi' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Prodi</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ asset('transaksi-tambah') }}"
-                                class="nav-link {{ $action == 'tambah_transaksi' ? 'active' : '' }}">
+                            <a href="{{ route('laboratorium.index') }}"
+                                class="nav-link {{ $action == 'Laboratorium' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Laboratorium</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ asset('transaksi-tambah') }}"
-                                class="nav-link {{ $action == 'tambah_transaksi' ? 'active' : '' }}">
+                            <a href="{{ route('inventaris.index') }}"
+                                class="nav-link {{ $action == 'Inventaris' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Alat</p>
+                                <p>Inventaris</p>
                             </a>
                         </li>
                     </ul>

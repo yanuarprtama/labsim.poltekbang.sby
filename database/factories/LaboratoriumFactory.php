@@ -21,11 +21,15 @@ class LaboratoriumFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'l_nama' => $this->faker->word(),
-            'l_jenis' => $this->faker->randomElement(["laboratorium","simulator"]),
-            'l_status' => $this->faker->randomElement(["aktif","non_aktif"]),
+        $data = [
             'prodi_id' => Prodi::factory(),
+            'l_nama' => $this->faker->unique()->word(),
+            'l_jenis' => $this->faker->randomElement(["laboratorium", "simulator"]),
+            'l_status' => $this->faker->randomElement(["aktif", "non_aktif"]),
         ];
+
+        $data["l_slug"] = Str::slug($data["l_nama"]);
+
+        return $data;
     }
 }

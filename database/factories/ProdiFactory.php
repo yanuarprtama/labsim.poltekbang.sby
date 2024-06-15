@@ -20,10 +20,14 @@ class ProdiFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        $data = [
             'p_nama' => $this->faker->word(),
             'p_kode' => $this->faker->word(),
-            'status' => $this->faker->randomElement(["aktif","non_aktif"]),
+            'status' => $this->faker->randomElement(["aktif", "non_aktif"]),
         ];
+
+        $data["p_slug"] = Str::slug($data["p_nama"]);
+
+        return $data;
     }
 }

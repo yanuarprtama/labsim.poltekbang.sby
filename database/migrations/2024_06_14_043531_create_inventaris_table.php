@@ -15,11 +15,11 @@ return new class extends Migration
 
         Schema::create('inventaris', function (Blueprint $table) {
             $table->id();
-            $table->string('a_nama');
+            $table->string('a_nama')->unique();
             $table->string('a_kode');
-            $table->string('a_stok');
-            $table->enum('a_status', ["tersedia","tidak"]);
-            $table->foreignId('laboratorium_id')->constrained();
+            $table->integer('a_stok');
+            $table->enum('a_status', ["tersedia", "tidak"])->default("tersedia");
+            $table->foreignId('laboratorium_id')->constrained("laboratoriums");
             $table->timestamps();
         });
 

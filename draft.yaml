@@ -60,7 +60,7 @@ models:
   DetailPeminjamanInventaris :
     peminjaman_inventaris_id : id foreign:peminjaman_inventaris
     inventaris_id : id foreign:inventaris
-    dpi_qty : int
+    dpi_qty : integer
     relationships:
       belongsTo : Inventaris,PeminjamanInventaris
 

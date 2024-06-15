@@ -11,6 +11,8 @@ class Laboratorium extends Model
 {
     use HasFactory;
 
+    protected $table = "laboratoriums";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,6 +20,7 @@ class Laboratorium extends Model
      */
     protected $fillable = [
         'l_nama',
+        'l_slug',
         'l_jenis',
         'l_status',
         'prodi_id',

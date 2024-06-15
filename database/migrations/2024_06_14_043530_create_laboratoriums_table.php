@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('laboratoria', function (Blueprint $table) {
+        Schema::create('laboratoriums', function (Blueprint $table) {
             $table->id();
-            $table->string('l_nama');
-            $table->enum('l_jenis', ["laboratorium","simulator"]);
-            $table->enum('l_status', ["aktif","non_aktif"]);
+            $table->string('l_nama')->unique();
+            $table->string('l_slug');
+            $table->enum('l_jenis', ["laboratorium", "simulator"]);
+            $table->enum('l_status', ["aktif", "non_aktif"])->default("aktif");
             $table->foreignId('prodi_id')->constrained();
             $table->timestamps();
         });

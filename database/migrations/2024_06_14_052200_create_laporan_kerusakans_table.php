@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('inventaris_peminjaman_inventaris', function (Blueprint $table) {
-            $table->foreignId('inventari_id');
-            $table->foreignId('peminjaman_inventari_id');
+        Schema::create('laporan_kerusakans', function (Blueprint $table) {
+            $table->id();
+            $table->string("lk_lampiran");
+            $table->text("lk_keterangan");
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventaris_peminjaman_inventaris');
+        Schema::dropIfExists('laporan_kerusakans');
     }
 };

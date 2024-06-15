@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('peminjaman_inventaris_id')->constrained('peminjaman_inventaris');
             $table->foreignId('inventaris_id')->constrained('inventaris');
-            $table->string('dpi_qty');
+            $table->integer('dpi_qty');
             $table->timestamps();
         });
 

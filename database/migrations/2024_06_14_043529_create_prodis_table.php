@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('prodis', function (Blueprint $table) {
             $table->id();
-            $table->string('p_nama');
+            $table->string('p_nama')->unique();
             $table->string('p_kode');
-            $table->enum('status', ["aktif","non_aktif"]);
+            $table->string('p_slug')->unique();
+            $table->enum('status', ["aktif", "non_aktif"])->default("aktif");
             $table->timestamps();
         });
     }
