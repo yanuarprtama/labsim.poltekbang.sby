@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\DataTables\LaboratoriumDataTable;
 use App\Http\Requests\RequestLaboratorium;
+use App\Models\Inventaris;
 
 class LaboratoriumController extends Controller
 {
@@ -29,14 +30,16 @@ class LaboratoriumController extends Controller
         return DataTables::of($laboratorium)
             ->addColumn("edit", "admin.laboratorium.component.action")
             ->rawColumns(["edit"])
+
             ->make(true);
     }
 
     public function inventaris($slug)
     {
-        $laboratorium = Laboratorium::with("inventaris")->whereLSlug($slug);
-        return DataTables::of($laboratorium)
-            ->addColumn("edit", "admin.laboratorium.component.action")
+        $laboratorium = Laboratorium::whereLSlug($slug)->first();
+        $inventaris = Inventaris::whereLaboratoriumId($laboratorium->id);
+        return DataTables::of($inventaris)
+            ->addColumn("edit", "admin.inventaris.component.action")
             ->rawColumns(["edit"])
             ->make(true);
     }
@@ -99,13 +102,13 @@ class LaboratoriumController extends Controller
     public function update(RequestLaboratorium $request, Laboratorium $laboratorium)
     {
         $validation = $request->validated();
-
+        $validation["l_slug"] = Str::slug($validation["l_nama"]);
         try {
-            $data = $laboratorium->update($validation + Str::slug($validation["l_nama"]));
+            $data = $laboratorium->update($validation);
         } catch (\Exception $th) {
             return back()->withInput()->with("error", "Ups ada yang salah !");
         }
-        return back()->withInput()->with("success", "Berhasil memperbarui");
+        return back()->with("success", "Berhasil memperbarui");
     }
 
     /**

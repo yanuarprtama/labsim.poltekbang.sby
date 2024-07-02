@@ -6,6 +6,8 @@
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#stok{{ $model->id }}">
         Stok
     </button>
+    <a class="btn btn-success" href="{{ route('laboratorium.show', $model->laboratorium->l_slug) }}">Kunjungi
+        Laboratorium</a>
 </div>
 
 

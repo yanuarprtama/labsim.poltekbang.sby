@@ -5,7 +5,13 @@
                 <div class="card">
                     <div class="card-header" style="background-color: white">
                         <h3>{{ $title }}</h3>
-                        <a class="btn btn-success mb-3" href="{{ route('inventaris.create') }}">Tambah</a>
+
+                        @if (isset($isInsert))
+                            @if ($isInsert)
+                                <a class="btn btn-success mb-3" href="{{ $url }}">Tambah</a>
+                            @endif
+                        @endif
+
                         <div class="overflow-visible" style="width: 10wv">
                             @if (session()->has('success'))
                                 <div class="alert alert-success alert-dismissible fade show " role="alert">

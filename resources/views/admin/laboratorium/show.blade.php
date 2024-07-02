@@ -2,35 +2,36 @@
 
 @section('content')
     <x-layout-inner :title="'From Tambah Inventaris ' . $laboratorium->l_nama">
-        <form method="post" action="{{ route('laboratorium.store') }}">
+        <form method="post" action="{{ route('inventaris.store') }}">
             @csrf
+            <input type="text" name="laboratorium_id" value="{{ $laboratorium->id }}" class="visually-hidden">
 
-            {{-- Nama Laboratorium --}}
+            {{-- Nama Inventaris --}}
             <div class="mb-3 col-md-6 form-floating">
-                <input type="text" class="form-control @error('l_nama') is-invalid @enderror" placeholder="..."
-                    id="l_nama" name="l_nama" value="{{ old('l_nama') }}">
-                <label for="l_nama" class="ms-2">Nama Laboratorium</label>
-                @error('l_nama')
+                <input type="text" class="form-control @error('a_nama') is-invalid @enderror" placeholder="..."
+                    id="a_nama" name="a_nama" value="{{ old('a_nama') }}">
+                <label for="a_nama" class="ms-2">Nama</label>
+                @error('a_nama')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            {{-- Jenis --}}
-            <div class="mb-3 mt-4 col-md-6">
-                <label for="l_jenis" class="form-label">Jenis Laboratorium</label>
-                <select class="form-control form-control-lg text-capitalize @error('l_jenis') is-invalid @enderror"
-                    id="l_jenis" name="l_jenis" value="{{ old('l_jenis') }}">
-                    <option selected disabled hidden>
-                        --Pilih Jenis--
-                    </option>
-                    <option value="laboratorium" class="text-capitalize">
-                        Laboratorium
-                    </option>
-                    <option value="simulator" class="text-capitalize">
-                        Simulator
-                    </option>
-                </select>
-                @error('l_jenis')
+            {{-- Kode Inventaris --}}
+            <div class="mb-3 col-md-6 form-floating">
+                <input type="text" class="form-control @error('a_kode') is-invalid @enderror" placeholder="..."
+                    id="a_kode" name="a_kode" value="{{ old('a_kode') }}">
+                <label for="a_kode" class="ms-2">Kode</label>
+                @error('a_kode')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Stok Inventaris --}}
+            <div class="mb-3 col-md-6 form-floating">
+                <input type="text" class="form-control @error('a_stok') is-invalid @enderror" placeholder="..."
+                    id="a_stok" name="a_stok" value="{{ old('a_stok') }}">
+                <label for="a_stok" class="ms-2">Stok</label>
+                @error('a_stok')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -45,7 +46,6 @@
             <table id="table-laboratorium" class="table">
                 <thead>
                     <tr>
-                        <th>id</th>
                         <th>Nama</th>
                         <th>Kode</th>
                         <th>Stok</th>
@@ -65,19 +65,18 @@
                 serverSide: true,
                 ajax: '{{ route('laboratorium.inventaris', $laboratorium->l_slug) }}',
                 columns: [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'a_nama',
+                        name: 'a_nama',
+
                     },
                     {
-                        data: 'inventaris[0].a_nama',
-                        name: 'inventaris[0].a_nama'
-                    },
-                    {
-                        data: 'inventaris[0].a_kode',
-                        name: 'inventaris[0].a_kode'
+                        data: 'a_kode',
+                        name: 'a_kode',
+
                     }, {
-                        data: 'inventaris[0].a_stok',
-                        name: 'inventaris[0].a_stok'
+                        data: 'a_stok',
+                        name: 'a_stok',
+
                     }, {
                         data: 'edit',
                         name: 'edit'

@@ -25,15 +25,15 @@ class RequestInventaris extends FormRequest
         $inventaris = $this->route();
         if ($this->getMethod() != "PUT") {
             return [
-                "a_nama" => "required|unique:inventaris",
-                "a_kode" => "required",
+                "a_nama" => "required",
+                "a_kode" => "required|unique:inventaris",
                 "a_stok" => "required|numeric",
                 "laboratorium_id" => "required",
             ];
         }
         return [
-            "a_nama" => ["required", "unique" => Rule::unique("inventaris", "a_nama")->ignore($inventaris->id)],
-            "a_kode" => "required",
+            "a_nama" => ["required"],
+            "a_kode" => ["required", "unique" => Rule::unique("inventaris", "a_kode")->ignore($inventaris->id)],
             "a_stok" => "required|numeric",
             "laboratorium_id" => "required",
         ];

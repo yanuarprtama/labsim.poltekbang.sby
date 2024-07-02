@@ -3,33 +3,22 @@
 @section('content')
     <x-layout-inner :title="$title">
         <div class="table-responsive">
-            <table id="table-inventaris" class="table">
-                <thead>
-                    <tr>
-                        <th>Laboratorium</th>
-                        <th>Nama</th>
-                        <th>Kode</th>
-                        <th>Stok</th>
-                        <th>edit</th>
-                    </tr>
-                </thead>
-            </table>
+            {{ $dataTable->table() }}
         </div>
     </x-layout-inner>
 @endsection
 
 @push('scripts')
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#table-inventaris').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('inventaris.data') }}',
                 columns: [{
-                        data: 'laboratorium',
-                        name: 'laboratorium',
-                        orderable: false,
-                        searchable: true
+                        data: 'l_nama',
+                        name: 'l_nama',
+                        searchable: false
                     },
                     {
                         data: 'a_nama',
@@ -51,5 +40,6 @@
                 ]
             });
         });
-    </script>
+    </script> --}}
+    {{ $dataTable->scripts() }}
 @endpush

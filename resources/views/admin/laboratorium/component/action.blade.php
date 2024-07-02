@@ -1,6 +1,6 @@
 <div class="d-flex justify-center gap-1" style="width: 50%">
     <a class="block btn btn-primary" href="{{ route('laboratorium.show', $model->l_slug) }}">Tambah Inventaris</a>
-    <a class="block btn btn-primary" href="{{ route('laboratorium.edit', $model->id) }}">Edit</a>
+    <a class="block btn btn-success" href="{{ route('laboratorium.edit', $model->id) }}">Edit</a>
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus{{ $model->id }}">
         <i class="ti ti-trash fs-5"></i>Hapus</a>
     </button>

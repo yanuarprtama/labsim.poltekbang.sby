@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\InventarisDataTable;
 use App\Http\Requests\RequestInventaris;
 use App\Models\Inventaris;
 use App\Models\Laboratorium;
@@ -13,9 +14,9 @@ class InventarisController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(InventarisDataTable $data)
     {
-        return view("admin.inventaris.lihat", [
+        return $data->render("admin.inventaris.lihat", [
             "title" => "Inventaris",
             "action" => "Inventaris",
             "laboratorium" => Laboratorium::all(),
@@ -24,11 +25,11 @@ class InventarisController extends Controller
 
     public function data()
     {
-        $inventaris = Inventaris::with("laboratorium");
+        $inventaris = Inventaris::join("laboratoriums", "inventaris.laboratorium_id", "=", "laboratoriums.id");
 
         return DataTables::of($inventaris)
-            ->addColumn("laboratorium", "admin.inventaris.component.laboratorium")
             ->addColumn("edit", "admin.inventaris.component.action")
+            ->only(["l_nama", "a_nama", "a_kode", "a_stok", "edit"])
             ->rawColumns(["edit", "laboratorium"])
             ->make(true);
     }
@@ -51,11 +52,15 @@ class InventarisController extends Controller
     public function store(RequestInventaris $request)
     {
         $validation = $request->validated();
+        $base_url = explode("/", url()->previous())[3];
 
-        try {
-            $data = Inventaris::create($validation);
-        } catch (\Exception $th) {
-            return back()->withInput()->with("error", "Ups ada yang salah !");
+        // try {
+        $data = Inventaris::create($validation);
+        // } catch (\Exception $th) {
+        //     return back()->withInput()->with("error", "Ups ada yang salah !");
+        // }
+        if ($base_url == "laboratorium") {
+            return back()->with("success", "Berhasil menambahkan " . $data["a_nama"]);
         }
         return redirect()->route("inventaris.index")->withInput()->with("success", "Berhasil menambahkan " . $data["a_nama"]);
     }

@@ -33,7 +33,7 @@ class RequestLaboratorium extends FormRequest
             ];
         }
         return [
-            "l_nama" => ["required", "unique" => Rule::unique("laboratoriums", "l_nama")->ignore($laboratorium->id)],
+            "l_nama" => ["required", "unique" => Rule::unique("laboratoriums", "l_nama")->ignore($laboratorium->laboratorium->id)],
             "l_jenis" => ["required", Rule::enum(LaboratoriumState::class)],
             "prodi_id" => "required",
         ];
