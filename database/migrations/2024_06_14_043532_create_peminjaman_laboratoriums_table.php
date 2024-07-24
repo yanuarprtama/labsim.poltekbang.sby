@@ -21,8 +21,8 @@ return new class extends Migration
             $table->time('pl_jam_mulai');
             $table->time('pl_jam_akhir');
             $table->string('pl_dosen_pengajar');
-            $table->enum('pl_status', ["DITERIMA", "KADALUARSA", "DITOLAK", "DIBATALKAN", "DIKEMBALIKAN"]);
-            $table->foreignId('laboratorium_id')->constrained();
+            $table->enum('pl_status', ["DITERIMA", "PROSES", "DITOLAK", "DIBATALKAN", "DIKEMBALIKAN"])->default("PROSES");
+            $table->foreignId('laboratorium_id')->constrained("laboratoriums");
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

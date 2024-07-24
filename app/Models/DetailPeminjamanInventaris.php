@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class DetailPeminjamanInventaris extends Model
+class DetailPeminjamanInventaris extends Pivot
 {
     use HasFactory;
+
+    protected $table = "detail_peminjaman_inventaris";
 
     /**
      * The attributes that are mass assignable.

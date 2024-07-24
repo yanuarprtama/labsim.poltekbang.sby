@@ -37,7 +37,8 @@ class PeminjamanInventaris extends Model
 
     public function inventaris(): BelongsToMany
     {
-        return $this->belongsToMany(Inventaris::class);
+        return $this->belongsToMany(Inventaris::class, "detail_peminjaman_inventaris", "peminjaman_inventaris_id", "inventaris_id")
+            ->using(DetailPeminjamanInventaris::class)->withPivot("dpi_qty")->as("inventaris");
     }
 
     public function detailPeminjamanInventaris(): HasOne

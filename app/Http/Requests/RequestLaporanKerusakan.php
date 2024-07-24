@@ -26,4 +26,15 @@ class RequestLaporanKerusakan extends FormRequest
             "lk_keterangan" => "required|max:1000",
         ];
     }
+
+    public function messages()
+    {
+        return [
+            "lk_lampiran.required" => "Lampiran mohon diisi!",
+            "lk_lampiran.image" => "Lampiran mohon diisi menggunakan gambar !",
+
+            "lk_keterangan.max" => "Keterangan mohon diisi dengan karakter tidak lebih 1000 !",
+            "lk_keterangan.required" => "Keterangan mohon diisi berisi !",
+        ];
+    }
 }

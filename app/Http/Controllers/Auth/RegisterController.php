@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\JabatanState;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -24,11 +26,23 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function redirectTo()
+    {
+        switch (auth()->user()->role) {
+            case 'user':
+                $redirectTo = "/";
+                break;
+            default:
+                $redirectTo = "/admin";
+                break;
+        }
+
+        return $redirectTo;
+    }
 
     /**
      * Create a new controller instance.
@@ -49,9 +63,29 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'nama' => ['required', 'string', 'max:255'],
+            'NIP' => ['required', 'max:255'],
+            'jabatan' => ['required', Rule::enum(JabatanState::class)],
+        ], [
+            "email.required" => "Email mohon diisi!",
+            "email.email" => "Email tidak valid!",
+            "email.max" => "Email tidak valid!",
+            "email.unique" => "Email sudah digunakan!",
+
+            "password.required" => "Password mohon diisi!",
+            "password.min" => "Password minimal 8 karakter!",
+            "password.confirmed" => "Password tidak cocok dengan password konfirmasi!",
+
+            "nama.required" => "Nama lengkap mohon diisi!",
+            "nama.max" => "Nama lengkap terlalu panjang!",
+
+            "NIP.required" => "NIP mohon diisi!",
+            "NIP.max" => "NIP terlalu panjang!",
+
+            "jabatan.required" => "Jabatan mohon diisi!",
+            "jabatan.Illuminate\Validation\Enum" => "Jabatan tidak valid!",
         ]);
     }
 
@@ -64,8 +98,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'nama' => $data['nama'],
             'email' => $data['email'],
+            'NIP' => $data['NIP'],
+            'jabatan' => $data['jabatan'],
+            'role' => "user",
             'password' => Hash::make($data['password']),
         ]);
     }

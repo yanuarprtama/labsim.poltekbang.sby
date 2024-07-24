@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RequestLaporanKerusakan;
-use App\Models\LaporanKerusakan;
 use Illuminate\Http\Request;
+use App\Models\LaporanKerusakan;
+use Illuminate\Support\Facades\Storage;
+use App\DataTables\LaporanKerusakanDataTable;
+use App\Http\Requests\RequestLaporanKerusakan;
 
 class LaporanKerusakanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(LaporanKerusakanDataTable $data)
     {
-        return view("admin.laporan.kerusakan.lihat", [
+        return $data->render("admin.laporan.kerusakan.lihat", [
             "title" => "kerusakan",
-            "action" => "kerusakan",
+            "action" => "lihat pengajuan",
         ]);
     }
 
@@ -26,7 +28,7 @@ class LaporanKerusakanController extends Controller
     {
         return view("admin.laporan.kerusakan.create", [
             "title" => "kerusakan",
-            "action" => "kerusakan",
+            "action" => "tambah pengajuan",
         ]);
     }
 
@@ -36,13 +38,22 @@ class LaporanKerusakanController extends Controller
     public function store(RequestLaporanKerusakan $request)
     {
         $validation = $request->validated();
+        $validation["user_id"] = auth()->user()->id;
 
         try {
-            
+            $file_kerusakan = $request->file('lk_lampiran');
+            $foto_kerusakan = $file_kerusakan->hashName();
+
+            $foto_kerusakan_path = $file_kerusakan->storeAs("/kerusakan", $foto_kerusakan);
+            $foto_kerusakan_path = Storage::disk("public")->put("/kerusakan", $file_kerusakan);
+            $validation['lk_lampiran'] = $foto_kerusakan_path;
+
+            LaporanKerusakan::create($validation);
         } catch (\Throwable $th) {
-            //throw $th;
+            return back()->with("error", "Ups! Gagal menambahkan laporan , Segera  hubungi admin");
         }
 
+        return back()->with("success", "Berhasil Menambahkan");
     }
 
     /**
@@ -74,6 +85,12 @@ class LaporanKerusakanController extends Controller
      */
     public function destroy(LaporanKerusakan $laporanKerusakan)
     {
-        //
+        try {
+            $laporanKerusakan->delete();
+        } catch (\Throwable $th) {
+            return back()->with("error", "Ups! Gagal menambahkan laporan , Segera  hubungi admin");
+        }
+
+        return back()->with("success", "Berhasil menghapus laporan kerusakan");
     }
 }

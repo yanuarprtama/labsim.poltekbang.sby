@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\KritikSaranInventaris;
-use App\Models\PeminjamanInventari;
+use App\Models\PeminjamanInventaris;
 
 class KritikSaranInventarisFactory extends Factory
 {
@@ -22,7 +22,7 @@ class KritikSaranInventarisFactory extends Factory
     public function definition(): array
     {
         return [
-            'peminjaman_inventaris_id' => PeminjamanInventari::factory(),
+            'peminjaman_inventaris_id' => PeminjamanInventaris::factory(),
             'ks_kritik' => $this->faker->text(),
             'ks_saran' => $this->faker->text(),
         ];

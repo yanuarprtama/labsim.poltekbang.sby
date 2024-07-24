@@ -21,7 +21,7 @@ class ProdiFactory extends Factory
     public function definition(): array
     {
         $data = [
-            'p_nama' => $this->faker->word(),
+            'p_nama' => $this->faker->unique()->word(),
             'p_kode' => $this->faker->word(),
             'status' => $this->faker->randomElement(["aktif", "non_aktif"]),
         ];

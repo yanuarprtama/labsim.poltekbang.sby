@@ -65,24 +65,31 @@
 
                 {{-- Laporan Kerusakan Start --}}
 
-                <li class="nav-item {{ $title == 'Pengeluaran' ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ $title == 'Pengeluaran' ? 'active' : '' }}">
+                <li class="nav-item {{ $title == 'kerusakan' ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ $title == 'kerusakan' ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pass-fill nav-icon" viewBox="0 0 16 16">
                             <path
                                 d="M10 0a2 2 0 1 1-4 0H3.5A1.5 1.5 0 0 0 2 1.5v13A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 12.5 0zM4.5 5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1m0 2h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1" />
                         </svg>
                         <p>
-                            Laporan
+                            Pengajuan Laporan
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ asset('pengeluaran-tambah') }}"
-                                class="nav-link {{ $action == 'tambah_pengeluaran' ? 'active' : '' }}">
+                            <a href="{{ route('laporan.kerusakan.index') }}"
+                                class="nav-link {{ $action == 'lihat pengajuan' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Laporan Kerusakan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.kerusakan.create') }}"
+                                class="nav-link {{ $action == 'tambah pengajuan' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ajukan Kerusakan</p>
                             </a>
                         </li>
                     </ul>

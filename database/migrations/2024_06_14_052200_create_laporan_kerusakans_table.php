@@ -15,6 +15,7 @@ return new class extends Migration
 
         Schema::create('laporan_kerusakans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->constrained("users");
             $table->string("lk_lampiran");
             $table->text("lk_keterangan");
             $table->timestamps();

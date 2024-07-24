@@ -11,6 +11,8 @@ class PeminjamanLaboratorium extends Model
 {
     use HasFactory;
 
+    protected $table = "peminjaman_laboratoriums";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,7 +48,7 @@ class PeminjamanLaboratorium extends Model
 
     public function laboratorium(): BelongsTo
     {
-        return $this->belongsTo(Laboratorium::class);
+        return $this->belongsTo(Laboratorium::class, "laboratorium_id");
     }
 
     public function user(): BelongsTo

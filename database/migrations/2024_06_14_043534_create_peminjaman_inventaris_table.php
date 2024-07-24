@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('pi_nomor_peminjaman');
             $table->time('pi_jam_mulai');
             $table->time('pi_jam_akhir');
-            $table->enum('pi_status', ["DITERIMA","KADALUARSA","DITOLAK","DIBATALKAN","DIKEMBALIKAN"]);
+            $table->enum('pi_status', ["DITERIMA", "PROSES", "DITOLAK", "DIBATALKAN", "DIKEMBALIKAN", "DIPROSES"])->default("DIPROSES");
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

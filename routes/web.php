@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\LaboratoriumController;
+use App\Http\Controllers\LaporanKerusakanController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\ProdiController;
 use App\Models\Laboratorium;
 
@@ -19,67 +21,102 @@ use App\Models\Laboratorium;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', [
-        "title" => "Data Pokok",
-        "action" => "Transaksi"
-    ]);
-});
+Route::controller(PeminjamanController::class)->group(function () {
+    Route::group(["as" => "peminjaman.", "middleware" => "auth"], function () {
+        Route::get("/", "index")->name("index");
 
-Route::controller(ProdiController::class)->group(function () {
-    Route::group(["prefix" => "prodi", "as" => "prodi."], function () {
-        Route::get("", "index")->name("index");
-        Route::get("data", "data")->name("data");
-        Route::get("show/{slug}", "show")->name("show");
+        Route::post("peminjaman/inventaris/action", "storeInventaris")->name("inventaris.action");
+        Route::post("peminjaman/laboratorium/action", "storeLaboratorium")->name("laboratorium.action");
 
-        Route::get("create", "create")->name("create");
-        Route::post("store", "store")->name("store");
-
-        Route::get("edit/{prodi}", "edit")->name("edit");
-        Route::put("update/{prodi}", "update")->name("update");
-        Route::put("update/status/{prodi}", "update_status")->name("update.status");
-
-
-        Route::delete("delete/{prodi}", "destroy")->name("delete");
+        Route::get("riwayat/{type_peminjaman}", "peminjamanInventarisHistory")->name("peminjaman.riwayat");
+        Route::post("peminjaman/batal", "peminjamanBatal")->name("peminjaman.cancel");
     });
 });
 
-Route::controller(LaboratoriumController::class)->group(function () {
-    Route::group(["prefix" => "laboratorium", "as" => "laboratorium."], function () {
-        Route::get("", "index")->name("index");
 
-        Route::get("data", "data")->name("data");
-        Route::get("{slug}/inventaris", "inventaris")->name("inventaris");
+Route::group(["prefix" => "admin"], function () {
 
-        Route::get("show/{slug}", "show")->name("show");
+    /**
+     * Prodi Route
+     */
+    Route::controller(ProdiController::class)->group(function () {
+        Route::group(["prefix" => "prodi", "as" => "prodi.", "middleware" => "auth"], function () {
+            Route::get("", "index")->name("index");
+            Route::get("data", "data")->name("data");
+            Route::get("show/{slug}", "show")->name("show");
 
-        Route::get("create", "create")->name("create");
-        Route::post("store", "store")->name("store");
-        Route::get("edit/{laboratorium}", "edit")->name("edit");
-        Route::put("update/{laboratorium}", "update")->name("update");
-        Route::delete("delete/{laboratorium}", "destroy")->name("delete");
+            Route::get("create", "create")->name("create");
+            Route::post("store", "store")->name("store");
+
+            Route::get("edit/{prodi}", "edit")->name("edit");
+            Route::put("update/{prodi}", "update")->name("update");
+            Route::put("update/status/{prodi}", "update_status")->name("update.status");
+
+
+            Route::delete("delete/{prodi}", "destroy")->name("delete");
+        });
     });
-});
 
-Route::controller(InventarisController::class)->group(function () {
-    Route::group(["prefix" => "inventaris", "as" => "inventaris."], function () {
-        Route::get("", "index")->name("index");
+    /**
+     * Laboratorium Route
+     */
+    Route::controller(LaboratoriumController::class)->group(function () {
+        Route::group(["prefix" => "laboratorium", "as" => "laboratorium.", "middleware" => "auth"], function () {
+            Route::get("", "index")->name("index");
 
-        Route::get("data", "data")->name("data");
+            Route::get("data", "data")->name("data");
+            Route::get("{slug}/inventaris", "inventaris")->name("inventaris");
 
-        Route::get("show/{inventaris}", "show")->name("show");
+            Route::get("show/{slug}", "show")->name("show");
 
-        Route::get("create", "create")->name("create");
-        Route::post("store", "store")->name("store");
+            Route::get("create", "create")->name("create");
+            Route::post("store", "store")->name("store");
+            Route::get("edit/{laboratorium}", "edit")->name("edit");
+            Route::put("update/{laboratorium}", "update")->name("update");
+            Route::delete("delete/{laboratorium}", "destroy")->name("delete");
+        });
+    });
 
-        Route::get("edit/{inventaris}", "edit")->name("edit");
-        Route::put("update/{inventaris}", "update")->name("update");
-        Route::put("stok/{inventaris}", "update_stok")->name("stok");
+    /**
+     * Inventaris Route
+     */
+    Route::controller(InventarisController::class)->group(function () {
+        Route::group(["prefix" => "inventaris", "as" => "inventaris.", "middleware" => "auth"], function () {
+            Route::get("", "index")->name("index");
 
-        Route::delete("delete/{inventaris}", "destroy")->name("delete");
+            Route::get("data", "data")->name("data");
+
+            Route::get("show/{inventaris}", "show")->name("show");
+
+            Route::get("create", "create")->name("create");
+            Route::post("store", "store")->name("store");
+
+            Route::get("edit/{inventaris}", "edit")->name("edit");
+            Route::put("update/{inventaris}", "update")->name("update");
+            Route::put("stok/{inventaris}", "update_stok")->name("stok");
+
+            Route::delete("delete/{inventaris}", "destroy")->name("delete");
+        });
+    });
+
+    /**
+     * Laporan Route
+     */
+    Route::controller(LaporanKerusakanController::class)->group(function () {
+        Route::group(["prefix" => "laporan", "as" => "laporan.", "middleware" => "auth"], function () {
+
+            Route::group(["prefix" => "kerusakan", "as" => "kerusakan."], function () {
+                Route::get("", "index")->name("index");
+
+                // Tambah Kerusakan
+                Route::get("create", "create")->name("create");
+                Route::post("store", "store")->name("store");
+
+                // Delete Kerusakan
+                Route::delete("delete/laporanKerusakan", "destroy")->name("delete");
+            });
+        });
     });
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
