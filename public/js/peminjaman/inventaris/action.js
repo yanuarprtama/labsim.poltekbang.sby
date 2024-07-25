@@ -1,5 +1,6 @@
 import * as validation from "../../helper/validation.js"
 import { url, csrf_token } from "../../helper/environment.js"
+import * as service from "../../helper/service.js"
 
 $(document).ready(function () {
     var laboratorium = $("#laboratorium")
@@ -132,6 +133,7 @@ $('#submitForm').click(function () {
                 inventaris: inventarisData
             },
             success: function (response) {
+                service.refreshHistoryInventaris()
                 form.before(`<div class="alert alert-success alert-dismissible fade show" id="error_message" role="alert">
                 ${response.message}
         <button type="button" class="btn-close fs-6" data-bs-dismiss="alert" aria-label="Close"></button>

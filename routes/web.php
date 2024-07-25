@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\KritikSaranController;
 use App\Http\Controllers\LaboratoriumController;
 use App\Http\Controllers\LaporanKerusakanController;
 use App\Http\Controllers\PeminjamanController;
@@ -33,8 +34,17 @@ Route::controller(PeminjamanController::class)->group(function () {
     });
 });
 
+Route::controller(KritikSaranController::class)->group(function () {
+    Route::group(["prefix" => "kritik-saran", "as" => "kritikSaran.", "middleware" => "auth"], function () {
+        Route::post("/store", "store");
+    });
+});
 
-Route::group(["prefix" => "admin"], function () {
+Route::get("p", function () {
+    echo (auth()->user()->role == "super_user" || auth()->user()->role == "admin");
+});
+
+Route::group(["prefix" => "admin", "middleware" => "admin"], function () {
 
     /**
      * Prodi Route

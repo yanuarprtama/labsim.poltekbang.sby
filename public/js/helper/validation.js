@@ -26,7 +26,6 @@ export function isValidateInputTime(str) {
 }
 
 export function isValidateInput(str) {
-    console.log(isEmpty(str), str);
     if (isEmpty(str)) {
         return "mohon diisi !"
     } else {

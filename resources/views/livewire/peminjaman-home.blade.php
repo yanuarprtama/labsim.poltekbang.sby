@@ -116,10 +116,13 @@
             <h5 class="text-uppercase mb-3">Riwayat Peminjaman</h5>
             <div id="tag_container">
                 <span id="inventaris_tag"
-                    class="border border-primary rounded-pill p-2 cursor-pointer bg-primary text-white">Inventaris</span>
+                    class="border border-primary rounded-pill p-2 cursor-pointer bg-primary bg-gradient text-white">Inventaris</span>
                 <span id="laboratorium_tag"
-                    class="border border-primary rounded-pill p-2 cursor-pointer">Laboratorium</span>
+                    class="border border-primary rounded-pill p-2 cursor-pointer bg-gradient">Laboratorium</span>
             </div>
+
+            <div id="modal_inventaris_container"></div>
+            <div id="modal_laboratorium_container"></div>
 
             <div id="table_history_container">
                 <table class="mt-3 table table-hover" id="table_inventaris">
@@ -127,7 +130,6 @@
                     </tbody>
                 </table>
 
-                <div id="modal_inventaris_container"></div>
 
                 <table class="mt-3 table table-hover d-none" id="table_laboratorium">
                     <tbody id="list_peminjaman_laboratorium">

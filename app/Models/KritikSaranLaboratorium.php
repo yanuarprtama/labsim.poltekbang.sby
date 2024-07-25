@@ -10,6 +10,8 @@ class KritikSaranLaboratorium extends Model
 {
     use HasFactory;
 
+    protected $table = "kritik_saran_laboratoriums";
+
     /**
      * The attributes that are mass assignable.
      *

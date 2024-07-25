@@ -1,5 +1,6 @@
 import * as validation from "../../helper/validation.js"
 import { url, csrf_token } from "../../helper/environment.js"
+import * as service from "../../helper/service.js"
 
 
 $(document).ready(function () {
@@ -25,7 +26,6 @@ $(document).ready(function () {
 
     $("button#buttonSubmitLaboratorium").click((e) => {
         e.preventDefault()
-        console.log(jenis_kegiatan.val());
         var error_jam_mulai = validation.isValidateInputTime(jam_mulai.val())
         var error_jam_akhir = validation.isValidateInputTime(jam_akhir.val())
         var error_mata_kuliah = validation.isValidateInput(mata_kuliah.val())
@@ -60,6 +60,7 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (response) {
+                    service.refreshHistoryLaboratorium()
                     $("input").val("")
                     dosen_pengajar.val("")
                     jenis_kegiatan.children()[0].selected = true
