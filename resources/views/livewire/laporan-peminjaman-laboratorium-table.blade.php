@@ -13,13 +13,13 @@
 
     <div class="d-flex justify-content-between align-items-center fs-1">
         <div class="btn" wire:click="decreaseYearNavigation">
-            <i class="bi bi-arrow-left-short fs-1"></i>
+            <i class="bi bi-arrow-left-short fs-2"></i>
         </div>
         <div class="d-flex align-items-center">
             <h3 class="mb-3 text-uppercase">{{ $year }}</h3>
         </div>
         <div wire:click="increaseYearNavigation" class="btn">
-            <i class="bi bi-arrow-right-short fs-1"></i>
+            <i class="bi bi-arrow-right-short fs-2"></i>
         </div>
     </div>
     <div class="table-responsive">

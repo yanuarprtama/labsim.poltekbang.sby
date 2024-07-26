@@ -111,20 +111,20 @@ Route::group(["prefix" => "admin", "middleware" => ["admin", "auth"]], function 
      */
     Route::controller(LaporanKerusakanController::class)->group(function () {
         Route::group(["prefix" => "laporan/pengajuan", "as" => "laporan.", "middleware" => "auth"], function () {
-
             Route::group(["prefix" => "kerusakan", "as" => "kerusakan."], function () {
                 Route::get("", "index")->name("index");
-
                 // Tambah Kerusakan
                 Route::get("create", "create")->name("create");
                 Route::post("store", "store")->name("store");
-
                 // Delete Kerusakan
                 Route::delete("delete/laporanKerusakan", "destroy")->name("delete");
             });
         });
     });
 
+    /**
+     * Peminjaman
+     */
     Route::controller(PeminjamanController::class)->group(function () {
         Route::group(["prefix" => "peminjaman", "as" => "daftarPeminjaman."], function () {
             Route::get("inventaris", "indexInventaris")->name("inventaris");
@@ -134,6 +134,9 @@ Route::group(["prefix" => "admin", "middleware" => ["admin", "auth"]], function 
         });
     });
 
+    /**
+     * Laporan
+     */
     Route::controller(LaporanController::class)->group(function () {
         Route::group(["prefix" => "laporan", "as" => "laporan.statik."], function () {
             Route::get("inventaris", "indexInventaris")->name("inventaris");

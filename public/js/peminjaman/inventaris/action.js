@@ -138,6 +138,7 @@ $('#submitForm').click(function () {
                 ${response.message}
         <button type="button" class="btn-close fs-6" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`);
+                location.reload();
             },
             error: function (response) {
                 form.before(`<div class="alert alert-danger alert-dismissible fade show" id="error_message" role="alert">
