@@ -2,153 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inventaris;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\PeminjamanInventaris;
-use App\Models\DetailPeminjamanInventaris;
+use App\DataTables\PeminjamanInventarisDataTable;
+use App\DataTables\PeminjamanLaboratoriumDataTable;
 use App\Models\PeminjamanLaboratorium;
-use App\Services\peminjaman\laboratorium\laboratoriumService;
 
 class PeminjamanController extends Controller
 {
-    private $laboratoriumService;
-
-    public function __construct(laboratoriumService $laboratoriumService)
+    public function indexInventaris(PeminjamanInventarisDataTable $data)
     {
-        $this->laboratoriumService = $laboratoriumService;
-    }
-
-    public function index()
-    {
-        return view('home', [
-            "title" => "Data Pokok",
-            "action" => "Transaksi"
+        return $data->render("admin.peminjaman.daftar_peminjaman.inventaris.lihat", [
+            "title" => "Peminjaman",
+            "action" => "daftar_inventaris",
         ]);
     }
 
-    public function storeInventaris(Request $request)
+    public function indexLaboratorium(PeminjamanLaboratoriumDataTable $data)
+    {
+        return $data->render("admin.peminjaman.daftar_peminjaman.laboratorium.lihat", [
+            "title" => "Peminjaman",
+            "action" => "daftar_laboratorium",
+        ]);
+    }
+
+    public function updateStatusTerima($id, $type)
     {
         try {
-
-            if ($request->inventaris == null)
-                return response()->json([
-                    "error" => true,
-                    "message" => "Belum memasukkan inventaris"
-                ], 403);
-            $transaksi = DB::transaction(function () use ($request) {
-                $peminjaman = PeminjamanInventaris::create([
-                    "pi_nomor_peminjaman" => now() . "#INVENTARIS",
-                    "pi_jam_mulai" => $request->pi_jam_mulai,
-                    "pi_jam_akhir" => $request->pi_jam_akhir,
-                    "user_id" => auth()->user()->id,
+            if ($type == "laboratorium") {
+                PeminjamanLaboratorium::whereId($id)->update([
+                    "pl_status" => "DITERIMA"
                 ]);
-
-                foreach ($request->inventaris as $item) {
-                    $inventaris = Inventaris::whereId($item["id"])->first();
-                    if ($inventaris->a_stok < $item["qty"]) {
-                        return response()->json([
-                            "error" => true,
-                            "message" => $inventaris->a_nama . " stok tidak mencukupi",
-                        ], 403);
-                    }
-                    DetailPeminjamanInventaris::create([
-                        "inventaris_id" => $item["id"],
-                        "peminjaman_inventaris_id" => $peminjaman->id,
-                        "dpi_qty" => $item["qty"],
-                    ]);
-                }
-            });
-
-            if ($transaksi)
-                return $transaksi;
-        } catch (\Exception $th) {
-            return response()->json([
-                "error" => true,
-                "message" => "Internal Error",
-            ], 505);
-        }
-
-        return response()->json([
-            "error" => false,
-            "message" => "Peminjaman berhasil"
-        ]);
-    }
-    public function storeLaboratorium(Request $request)
-    {
-        try {
-            $check = $this->laboratoriumService->validateSchedule($request->pl_jam_mulai, $request->pl_jam_mulai, $request->laboratorium_id);
-            if ($check)
-                return response()->json([
-                    "error" => true,
-                    "message" => "Jadwal sudah ada, Silakan ganti jadwal"
-                ], 403);
-            $peminjaman = PeminjamanLaboratorium::create([
-                "pl_nomor_peminjaman" => now() . "#LABORATORIUM",
-                "pl_mata_kuliah" => $request->pl_mata_kuliah,
-                "pl_jenis_kegiatan" => $request->pl_jenis_kegiatan,
-                "pl_jam_mulai" => $request->pl_jam_mulai,
-                "pl_jam_akhir" => $request->pl_jam_akhir,
-                "pl_dosen_pengajar" => $request->pl_dosen_pengajar,
-                "laboratorium_id" => $request->laboratorium_id,
-                "user_id" => auth()->user()->id,
-            ]);
-        } catch (\Exception $th) {
-            return  response()->json([
-                "error" => true,
-                "message" => "Internal Error"
-            ], 505);
-        }
-
-        return response()->json([
-            "error" => false,
-            "message" => "Peminjaman" . $peminjaman->pl_nomor_peminjaman . " berhasil"
-        ]);
-    }
-
-    public function peminjamanInventarisHistory($type_peminjaman)
-    {
-        try {
-            if ($type_peminjaman == "inventaris") {
-                $peminjaman = PeminjamanInventaris::with("inventaris.laboratorium")->whereUserId(auth()->user()->id)->latest()->get();
-            } else if ($type_peminjaman == "laboratorium") {
-                $peminjaman = PeminjamanLaboratorium::with("laboratorium")->whereUserId(auth()->user()->id)->latest()->get();
-            }
-        } catch (\Exception $th) {
-            return response()->json([
-                "error" => true,
-                "data" => "Internal Error"
-            ], 505);
-        }
-
-        return response()->json([
-            "error" => false,
-            "data" => $peminjaman
-        ]);
-    }
-
-    public function peminjamanBatal(Request $request)
-    {
-        try {
-            if ($request->type_peminjaman == "inventaris") {
-                PeminjamanInventaris::whereId($request->id)->update([
-                    "pi_status" => "DIBATALKAN",
-                ]);
-            } else if ($request->type_peminjaman == "laboratorium") {
-                PeminjamanLaboratorium::whereId($request->id)->update([
-                    "pl_status" => "DIBATALKAN",
+            } else {
+                PeminjamanInventaris::whereId($id)->update([
+                    "pi_status" => "DITERIMA",
                 ]);
             }
         } catch (\Exception $th) {
-            return response()->json([
-                "error" => true,
-                "message" => "Internal Error"
-            ], 505);
+            return back()->with("error", "Ups ada yang salah ni");
         }
-
-        return response()->json([
-            "error" => false,
-            "message" => "Berhasil membatalkan"
-        ]);
+        return back()->with("success", "berhasil");
+    }
+    public function updateStatusTolak($id, $type)
+    {
+        try {
+            if ($type == "laboratorium") {
+                PeminjamanLaboratorium::whereId($id)->update([
+                    "pl_status" => "DITOLAK"
+                ]);
+            } else {
+                PeminjamanInventaris::whereId($id)->update([
+                    "pi_status" => "DITOLAK",
+                ]);
+            }
+        } catch (\Exception $th) {
+            return back()->with("error", "Ups ada yang salah ni");
+        }
+        return back()->with("success", "berhasil");
     }
 }

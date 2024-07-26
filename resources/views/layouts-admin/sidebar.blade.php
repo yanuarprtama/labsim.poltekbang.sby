@@ -15,7 +15,7 @@
             </div>
             <div class="info">
                 <a href="#" class="d-block">
-                    {{-- {{ Auth::user()->level }} --}}
+                    {{ Auth::user()->level }}
                 </a>
             </div>
         </div>
@@ -98,32 +98,72 @@
                 {{-- Laporan Kerusakan End --}}
 
                 {{-- Peminjaman Start --}}
-                <li class="nav-item {{ $title == 'Pengeluaran' ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ $title == 'Pengeluaran' ? 'active' : '' }}">
+                <li class="nav-item {{ $title == 'Peminjaman' ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ $title == 'Peminjaman' ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-cart2 nav-icon" viewBox="0 0 16 16">
                             <path
                                 d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
                         </svg>
                         <p>
-                            Peminjaman
+                            Daftar Peminjaman
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ asset('pengeluaran-tambah') }}"
-                                class="nav-link {{ $action == 'tambah_pengeluaran' ? 'active' : '' }}">
+                            <a href="{{ route('daftarPeminjaman.inventaris') }}"
+                                class="nav-link {{ $action == 'daftar_inventaris' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Peminjaman</p>
+                                <p>Inventaris</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('daftarPeminjaman.laboratorium') }}"
+                                class="nav-link {{ $action == 'daftar_laboratorium' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Laboratorium</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
                 {{-- Peminjaman End --}}
 
-
+                {{-- Laporan Start --}}
+                <li class="nav-item {{ $title == 'Laporan' ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ $title == 'Laporan' ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-cart2 nav-icon" viewBox="0 0 16 16">
+                            <path
+                                d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                        </svg>
+                        <p>
+                            Laporan
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.statik.inventaris') }}"
+                                class="nav-link {{ $action == 'laporan_inventaris' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Inventaris</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.statik.laboratorium') }}"
+                                class="nav-link {{ $action == 'laporan_laboratorium' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Laboratorium</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- Laporan End --}}
         </nav>
     </div>
 </aside>
